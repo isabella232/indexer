@@ -774,7 +774,7 @@ export default {
       logger,
       network,
       models: queryFeeModels,
-      collectEndpoint: new URL(argv.collectReceiptsEndpoint),
+      collectEndpoint: argv.collectReceiptsEndpoint,
       voucherRedemptionThreshold: argv.voucherRedemptionThreshold,
       voucherRedemptionBatchThreshold: argv.voucherRedemptionBatchThreshold,
       voucherRedemptionMaxBatchSize: argv.voucherRedemptionMaxBatchSize,
