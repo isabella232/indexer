@@ -839,6 +839,25 @@ class Agent {
       logger.info(`No active allocation for deployment, creating one now`, {
         allocationAmount: formatGRT(desiredAllocationAmount),
       })
+
+      // skip allocation if the previous allocation to the deployment closes with null or 0x00
+      const closedAllocation = (
+        await this.network.closedAllocations(deployment)
+      )[0]
+      if (
+        closedAllocation &&
+        closedAllocation.poi === utils.hexlify(Array(32).fill(0))
+      ) {
+        logger.warn(
+          `Skipping allocation to this deployment as the last allocation to it was closed by zero POI`,
+          {
+            deployment,
+            closedAllocation: closedAllocation.id,
+          },
+        )
+        return
+      }
+
       const allocationsCreated = await this.network.allocate(
         deployment,
         desiredAllocationAmount,
